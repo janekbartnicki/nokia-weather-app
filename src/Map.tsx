@@ -15,7 +15,7 @@ const defaultCSS: CSSProperties = {
     border: 'none'
 }
 
-const Map: React.FC<MapProps> = ({ fill='#EAEAEC', activeFill='#000000', stroke='#D6D6DA', customCSS=defaultCSS }) => {
+const Map: React.FC<MapProps> = ({ fill='#EAEAEC', activeFill='#787878', stroke='#D6D6DA', customCSS=defaultCSS }) => {
 
     //handling and checking the context
     const context = useContext(CountryContext);
@@ -32,7 +32,7 @@ const Map: React.FC<MapProps> = ({ fill='#EAEAEC', activeFill='#000000', stroke=
 
     //TODO: change the height prop
     return (
-        <ComposableMap className='h-[50rem]'>
+        <ComposableMap className='h-[50rem] w-full bg-blue-500' style={{background: `url("/globe_lines.svg")`}}>
             <Geographies geography={worldMap}>
                 {
                     ({ geographies }) =>

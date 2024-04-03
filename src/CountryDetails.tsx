@@ -10,7 +10,7 @@ const CountryDetails: React.FC = () => {
     }
     const { selectedCountry } = context;
 
-    return <div className="text-3xl font-bold">{selectedCountry.name}</div>
+    return <div className="text-3xl font-thin text-center">{selectedCountry.name}</div>
 }
 
 export default CountryDetails;
