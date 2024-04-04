@@ -1,7 +1,8 @@
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
-import worldMap from '../custom.geo.json';
+import worldMap from '../../custom.geo.json';
 import { CSSProperties, useContext } from 'react';
 import { CountryContext } from './CountryContext';
+import { GeographiesProps } from '../types/GeographiesProps';
 
 interface MapProps {
     fill?: string;
@@ -25,9 +26,8 @@ const Map: React.FC<MapProps> = ({ fill='#EAEAEC', activeFill='#787878', stroke=
     const { selectedCountry, setSelectedCountry } = context;
 
     //@types/react-simple-maps does not provide type "geographies"
-    const handleClick = (geo: any): void => {
-        setSelectedCountry({name: geo.properties.name, iso: geo.properties.iso_a2});
-        console.log(geo.properties.iso_a2);
+    const handleClick = (geo: GeographiesProps): void => {
+        setSelectedCountry({name: geo.properties.name as string, iso: geo.properties.iso_a2 as string});
     }
 
     //TODO: change the height prop
@@ -36,7 +36,7 @@ const Map: React.FC<MapProps> = ({ fill='#EAEAEC', activeFill='#787878', stroke=
             <Geographies geography={worldMap}>
                 {
                     ({ geographies }) =>
-                        geographies.map((geo) => (
+                        geographies.map((geo: GeographiesProps) => (
                             <Geography 
                                 key={geo.rsmKey} 
                                 geography={geo} 

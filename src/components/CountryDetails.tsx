@@ -1,7 +1,12 @@
 import { useContext } from "react"
 import { CountryContext } from "./CountryContext"
+import { WeatherData } from "../types/WeatherData";
 
-const CountryDetails: React.FC = () => {
+interface CountryDetailsProps {
+    info: WeatherData | null;
+}
+
+const CountryDetails: React.FC<CountryDetailsProps> = ({ info }) => {
 
     //handling and checking the context
     const context = useContext(CountryContext);

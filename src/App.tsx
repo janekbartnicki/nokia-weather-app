@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import Map from "./Map";
-import { CountryContext, SelectedCountryStateType } from "./CountryContext";
-import CountryDetails from "./CountryDetails";
+import Map from "./components/Map";
+import { CountryContext, SelectedCountryStateType } from "./components/CountryContext";
+import CountryDetails from "./components/CountryDetails";
+import { fetchWeatherByCountry } from "./utils/weatherUtils";
+import { WeatherData } from "./types/WeatherData";
 
 const App: React.FC = () => {
     const [selectedCountry, setSelectedCountry] = useState<SelectedCountryStateType>({
@@ -10,7 +12,18 @@ const App: React.FC = () => {
         iso: ''
     });
 
-    //TODO: due to an error in the map file, I will have to check before the API request if the country's ISO code is misspelled
+    const [countryInfo, setCountryInfo] = useState<WeatherData | null>(null);
+
+    useEffect(() => {
+        const fetchWeatherData = async () => {
+            const response = await fetchWeatherByCountry(selectedCountry);
+            setCountryInfo(response.data);
+        }
+
+        if(selectedCountry.iso)
+            fetchWeatherData();
+        
+    }, [selectedCountry]);
 
     return (
         <>
@@ -22,7 +35,7 @@ const App: React.FC = () => {
                 <div className="mb-[80px] mx-28 hidden lg:block">
                     <Map/>
                 </div>
-                <CountryDetails/>
+                <CountryDetails info={countryInfo}/>
             </CountryContext.Provider>
         </>
     )
