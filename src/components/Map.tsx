@@ -1,7 +1,7 @@
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 import worldMap from '../../custom.geo.json';
 import { CSSProperties, useContext } from 'react';
-import { CountryContext } from './CountryContext';
+import { LocationContext } from './LocationContext';
 import { GeographiesProps } from '../types/GeographiesProps';
 
 interface MapProps {
@@ -19,15 +19,25 @@ const defaultCSS: CSSProperties = {
 const Map: React.FC<MapProps> = ({ fill='#EAEAEC', activeFill='#787878', stroke='#D6D6DA', customCSS=defaultCSS }) => {
 
     //handling and checking the context
-    const context = useContext(CountryContext);
+    const context = useContext(LocationContext);
     if(!context) {
         throw new Error('An error occurred while loading the context.');
     }
-    const { selectedCountry, setSelectedCountry } = context;
+    const { locationState, locationDispatch } = context;
 
     //@types/react-simple-maps does not provide type "geographies"
     const handleClick = (geo: GeographiesProps): void => {
-        setSelectedCountry({name: geo.properties.name as string, iso: geo.properties.iso_a2 as string});
+        locationDispatch({
+            type: 'SET_SELECTED_COUNTRY',
+            payload: {name: geo.properties.name as string, iso: geo.properties.iso_a2 as string}
+        });
+
+        //scrolling to the details section
+        setTimeout(() => {
+            const element = document.getElementById('details');
+            element?.scrollIntoView({behavior: 'smooth'});
+        }, 200)
+        
     }
 
     //TODO: change the height prop
@@ -40,7 +50,7 @@ const Map: React.FC<MapProps> = ({ fill='#EAEAEC', activeFill='#787878', stroke=
                             <Geography 
                                 key={geo.rsmKey} 
                                 geography={geo} 
-                                fill={selectedCountry.name === geo.properties.name ? activeFill : fill}
+                                fill={locationState.selectedCountry.name === geo.properties.name ? activeFill : fill}
                                 stroke={stroke}
                                 onClick={() => handleClick(geo)}
                                 style={{
@@ -48,6 +58,7 @@ const Map: React.FC<MapProps> = ({ fill='#EAEAEC', activeFill='#787878', stroke=
                                     hover: customCSS,
                                     pressed: customCSS
                                 }}
+                                className='transition-all duration-500'
                             />
                     ))
                 }
