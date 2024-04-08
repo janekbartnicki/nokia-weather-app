@@ -3,6 +3,7 @@ import worldMap from '../../custom.geo.json';
 import { CSSProperties, useContext } from 'react';
 import { LocationContext } from './LocationContext';
 import { GeographiesProps } from '../types/GeographiesProps';
+import { scrollTo } from '../utils/scrollTo';
 
 interface MapProps {
     fill?: string;
@@ -34,15 +35,14 @@ const Map: React.FC<MapProps> = ({ fill='#EAEAEC', activeFill='#787878', stroke=
 
         //scrolling to the details section
         setTimeout(() => {
-            const element = document.getElementById('details');
-            element?.scrollIntoView({behavior: 'smooth'});
+            scrollTo('country-details');
         }, 200)
         
     }
 
     //TODO: change the height prop
     return (
-        <ComposableMap className='h-[50rem] w-full bg-blue-500' style={{background: `url("/globe_lines.svg")`}}>
+        <ComposableMap className='h-[50rem] w-full bg-blue-500 mb-[-4rem]' style={{background: `url("/globe_lines.svg")`}}>
             <Geographies geography={worldMap}>
                 {
                     ({ geographies }) =>

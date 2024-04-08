@@ -1,10 +1,12 @@
 import React, { createContext, Dispatch, useReducer } from "react";
 import { WeatherData } from "../types/WeatherData";
 
-enum actionTypes {
+enum locationActionTypes {
     SET_SELECTED_COUNTRY = 'SET_SELECTED_COUNTRY',
-    SET_INFO = 'SET_INFO',
-    SET_MODE = 'SET_MODE'
+    SET_COUNTRY_INFO = 'SET_COUNTRY_INFO',
+    ADD_CITY = 'ADD_CITY',
+    REMOVE_CITY = 'REMOVE_CITY'
+
 }
 
 interface LocationState {
@@ -12,12 +14,12 @@ interface LocationState {
         name: string;
         iso: string;
     },
-    info: WeatherData | null,
-    countryMode: boolean
+    countryInfo: WeatherData | null,
+    cities: WeatherData[]
 }
 
 interface LocationAction {
-    type: actionTypes | string;
+    type: locationActionTypes | string;
     payload: any;
 }
 
@@ -26,27 +28,32 @@ const initialState: LocationState = {
         name: 'Select a specific country',
         iso: ''
     },
-    info: null,
-    countryMode: true
+    countryInfo: null,
+    cities: []
 }
 
 const reducer = (state: LocationState, action: LocationAction) => {
     switch (action.type) {
-        case actionTypes.SET_SELECTED_COUNTRY:
+        case locationActionTypes.SET_SELECTED_COUNTRY:
             return {
                 ...state,
                 selectedCountry: action.payload
             };
-        case actionTypes.SET_INFO:
+        case locationActionTypes.SET_COUNTRY_INFO:
             return {
                 ...state,
-                info: action.payload
+                countryInfo: action.payload
             };
-        case actionTypes.SET_MODE:
+        case locationActionTypes.ADD_CITY:
             return {
                 ...state,
-                countryMode: action.payload
-            };    
+                cities: [ ...state.cities, action.payload]
+            };
+        case locationActionTypes.REMOVE_CITY:
+            return {
+                ...state,
+                cities: state.cities.filter(city => city.id != action.payload)
+            };
         default:
             return state;
     }

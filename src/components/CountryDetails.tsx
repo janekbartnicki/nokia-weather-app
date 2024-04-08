@@ -1,13 +1,9 @@
 import { useContext, useEffect, useState } from "react"
 
-import { WeatherData } from "../types/WeatherData";
 import { LocationContext } from "./LocationContext";
 
-interface CountryDetailsProps {
-    info: WeatherData | null;
-}
 
-const CountryDetails: React.FC<CountryDetailsProps> = ({ info }) => {
+const CountryDetails: React.FC = () => {
     //handling and checking the context
     const context = useContext(LocationContext);
     if(!context) {
@@ -18,25 +14,25 @@ const CountryDetails: React.FC<CountryDetailsProps> = ({ info }) => {
     const [weatherIcon, setWeatherIcon] = useState<string | null>(null);
 
     useEffect(() => {
-        if(info?.weather[0].icon)
-            setWeatherIcon(`http://openweathermap.org/img/w/${info.weather[0].icon}.png`);
-    }, [info])
-
-    console.log(info);
+        if(locationState.countryInfo?.weather[0].icon)
+            setWeatherIcon(`http://openweathermap.org/img/w/${locationState.countryInfo.weather[0].icon}.png`);
+    }, [locationState.countryInfo])
 
     return (
-        <div id="details" className="mx-10 lg:md:mx-20 mb-20 p-10 lg:mx-52 border-[1px] border-gray-400 rounded-sm">
-            <h1 className="text-center text-3xl p-5 pb-2">
-                {locationState.selectedCountry.name ? locationState.selectedCountry.name : "Unable to find "}
+        <div className="mx-10 lg:md:mx-20 mb-36 p-10 lg:mx-52 border-[1px] border-gray-400 rounded-sm">
+            <h1 className="flex justify-center text-3xl pb-10">
+                <p className="bg-black text-center text-white px-10 py-3">
+                    {locationState.selectedCountry.name ? locationState.selectedCountry.name : "Unable to find "}
+                </p>
             </h1>
 
             { 
-                info ? (
+                locationState.countryInfo ? (
                     <>
                         <p className="text-center pb-5">
                             {
-                                info.weather[0].description ?
-                                    info.weather[0].description.charAt(0).toUpperCase() + info.weather[0].description.slice(1) 
+                                locationState.countryInfo.weather[0].description ?
+                                    locationState.countryInfo.weather[0].description.charAt(0).toUpperCase() + locationState.countryInfo.weather[0].description.slice(1) 
                                     : null
                             }
                         </p>
@@ -44,27 +40,27 @@ const CountryDetails: React.FC<CountryDetailsProps> = ({ info }) => {
                             <div className="flex justify-center align-middle">
                                 <div className="font-bold">
                                     {weatherIcon ? <img src={weatherIcon} alt="Weather icon" /> : null}
-                                    {info.main.temp}&deg;C
+                                    {locationState.countryInfo.main.temp}&deg;C
                                 </div>
                                 
                             </div>
-                            <h3 className="text-md text-center my-5">Exact location: {info.name}</h3>
+                            <h3 className="text-md text-center my-5">Exact location: {locationState.countryInfo.name}</h3>
                             <div className="flex justify-center space-x-14">
                                 <div>
                                     <ul>
                                         <li>
                                             <span className="font-normal">
                                                 Perceived temperature: 
-                                            </span> {info.main.feels_like} &deg;C
+                                            </span> {locationState.countryInfo.main.feels_like} &deg;C
                                         </li>
                                         <li>
                                             <span className="font-normal">
                                                 Maximum temperature: 
-                                            </span> {info.main.temp_max} &deg;C</li>
+                                            </span> {locationState.countryInfo.main.temp_max} &deg;C</li>
                                         <li>
                                             <span className="font-normal">
                                             Minimum temperature:
-                                            </span> {info.main.temp_min} &deg;C</li>
+                                            </span> {locationState.countryInfo.main.temp_min} &deg;C</li>
                                     </ul>
                                 </div>
                                 <div>
@@ -72,16 +68,16 @@ const CountryDetails: React.FC<CountryDetailsProps> = ({ info }) => {
                                         <li>
                                             <span className="font-normal">
                                                 Humidity:
-                                            </span> {info.main.humidity} %</li>
+                                            </span> {locationState.countryInfo.main.humidity} %</li>
                                         <li>
                                             <span className="font-normal">
                                                 Wind speed:
-                                            </span> {info.wind.speed} m/s
+                                            </span> {locationState.countryInfo.wind.speed} m/s
                                         </li>
                                         <li>
                                             <span className="font-normal">
                                                 Wind direction:
-                                                </span> {info.wind.deg} &deg;
+                                                </span> {locationState.countryInfo.wind.deg} &deg;
                                         </li>
                                     </ul>
                                 </div>
