@@ -64,11 +64,15 @@ const reducer = (state: LocationState, action: LocationAction) => {
             const sortingFunction = (a: WeatherData, b: WeatherData) => {
                 if(options.value in a.main) {
                     if(options.asc) {
+                        //@ts-expect-error value will match
                         return Number(b.main[options.value]) - Number(a.main[options.value]);
+                        //@ts-expect-error value will match
                     } else return Number(a.main[options.value]) - Number(b.main[options.value]);
                 } else if (options.value in a.wind) {
                     if(options.asc) {
+                        //@ts-expect-error value will match
                         return Number(b.wind[options.value]) - Number(a.wind[options.value]);
+                        //@ts-expect-error value will match
                     } else return Number(a.wind[options.value]) - Number(b.wind[options.value]);
                 } else {
                     throw new Error('Cannot sort the cities array.');
