@@ -24,7 +24,7 @@ const CityDetails: React.FC<{cityInfo: WeatherData}> = ({cityInfo}) => {
     }
 
     return (
-        <div className="border border-1 border-black py-5 px-10 h-[35rem] rounded-sm mb-4 mx-2">
+        <div className="border border-1 border-black py-5 px-10 h-[36rem] rounded-sm mb-4 mx-2">
             <div className="flex justify-center text-3xl pb-10">
                 <p className="bg-black text-center text-white px-5 py-2 max-w-52">
                     {cityInfo.name}
