@@ -9,7 +9,6 @@ const App: React.FC = () => {
             <div className="text-center text-6xl font-thin my-24">
                 FreshAir<sup className="text-4xl">&copy;</sup>
             </div >
-
             {/* this section will be hidden on moblie */}
             <div className="hidden lg:block">
                 <Countries/>

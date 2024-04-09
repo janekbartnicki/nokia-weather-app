@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.sorted-by-prop {
+    background-color: rgb(231, 231, 231);
+    padding: 8px;
+    font-weight: bold;
+    border-radius: 0.125rem;
+}

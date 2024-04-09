@@ -39,34 +39,39 @@ const CityDetails: React.FC<{cityInfo: WeatherData}> = ({cityInfo}) => {
                     {cityInfo.main.temp}&deg;C
                 </div>
                 <ul className="font-thin text-center space-y-1 mb-5">
-                    <li>
+                    <li className='feels_like'>
                         <span className="font-normal">
                             Perceived temperature: 
                         </span> {cityInfo.main.feels_like} &deg;C
                     </li>
-                    <li>
+                    <li className='temp_max'>
                         <span className="font-normal">
                             Maximum temperature: 
                         </span> {cityInfo.main.temp_max} &deg;C
                     </li>
-                    <li>
+                    <li className='temp_min'>
                         <span className="font-normal">
                         Minimum temperature:
                         </span> {cityInfo.main.temp_min} &deg;C
                     </li>
-                    <li>
+                    <li className='humidity'>
                         <span className="font-normal">
                             Humidity:
                         </span> {cityInfo.main.humidity} %</li>
-                    <li>
+                    <li className='speed'>
                         <span className="font-normal">
                             Wind speed:
                         </span> {cityInfo.wind.speed} m/s
                     </li>
-                    <li>
+                    <li className='deg'>
                         <span className="font-normal">
                             Wind direction:
                             </span> {cityInfo.wind.deg} &deg;
+                    </li>
+                    <li className='pressure'>
+                        <span className="font-normal">
+                            Pressure:
+                            </span> {cityInfo.main.pressure} hPa
                     </li>
                 </ul>
             </div>

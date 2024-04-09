@@ -5,8 +5,10 @@ enum locationActionTypes {
     SET_SELECTED_COUNTRY = 'SET_SELECTED_COUNTRY',
     SET_COUNTRY_INFO = 'SET_COUNTRY_INFO',
     ADD_CITY = 'ADD_CITY',
-    REMOVE_CITY = 'REMOVE_CITY'
-
+    REMOVE_CITY = 'REMOVE_CITY',
+    SORT_CITIES = 'SORT_CITIES',
+    SET_CITIES_EXTREMES = 'SET_CITIES_EXTREMES',
+    CITIES_SORTED_BY = 'CITIES_SORTED_BY'
 }
 
 interface LocationState {
@@ -15,7 +17,8 @@ interface LocationState {
         iso: string;
     },
     countryInfo: WeatherData | null,
-    cities: WeatherData[]
+    cities: WeatherData[],
+    citiesSortedBy: string | null
 }
 
 interface LocationAction {
@@ -29,7 +32,8 @@ const initialState: LocationState = {
         iso: ''
     },
     countryInfo: null,
-    cities: []
+    cities: [],
+    citiesSortedBy: null
 }
 
 const reducer = (state: LocationState, action: LocationAction) => {
@@ -54,6 +58,31 @@ const reducer = (state: LocationState, action: LocationAction) => {
                 ...state,
                 cities: state.cities.filter(city => city.id != action.payload)
             };
+        case locationActionTypes.SORT_CITIES: {
+            const options: { value: (keyof Pick<WeatherData, 'main' | 'wind'>), asc: boolean} = action.payload;
+
+            const sortingFunction = (a: WeatherData, b: WeatherData) => {
+                if(options.value in a.main) {
+                    if(options.asc) {
+                        return Number(b.main[options.value]) - Number(a.main[options.value]);
+                    } else return Number(a.main[options.value]) - Number(b.main[options.value]);
+                } else if (options.value in a.wind) {
+                    if(options.asc) {
+                        return Number(b.wind[options.value]) - Number(a.wind[options.value]);
+                    } else return Number(a.wind[options.value]) - Number(b.wind[options.value]);
+                } else {
+                    throw new Error('Cannot sort the cities array.');
+                }
+            }
+
+            const sortedCitiesState = state.cities.sort(sortingFunction);
+            return { ...state, cities: sortedCitiesState };
+        }
+        case locationActionTypes.CITIES_SORTED_BY:
+            return {
+                ...state,
+                citiesSortedBy: action.payload
+            }
         default:
             return state;
     }
